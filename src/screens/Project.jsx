@@ -13,14 +13,10 @@ function Project() {
   );
 
   return (
-    <div className="p-4">
-      <p className="mb-2 text-lg font-base">Portfolio</p>
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-        <Header activeTab={activeTab} setActiveTab={setActiveTab} />
-        <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      </div>
-
-      <div className="mt-4 space-y-4">
+    <div>
+      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <div className="mt-4 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-1">
         {filteredProjects.map((project, index) => (
           <Card key={index} project={project} />
         ))}
