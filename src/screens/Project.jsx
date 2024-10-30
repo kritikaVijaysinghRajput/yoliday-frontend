@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import Search from "../components/Search";
 import Card from "../components/Card";
-import projectData from "@data";
+const projectData = require("./data/data.json");
 
 function Project() {
   const [activeTab, setActiveTab] = useState("Project");
