@@ -1,0 +1,16 @@
+
+
+/* Add this CSS in your global styles or as a separate CSS file */
+.tab-button {
+  background: transparent;
+  border: none;
+  padding: 10px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.tab-button:hover {
+  background: rgba(255, 165, 0, 0.2); 
+}
+
