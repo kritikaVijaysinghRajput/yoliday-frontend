@@ -1,16 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Search from "../components/Search";
 import Card from "../components/Card";
-import projectData from "../../../server/data/data.json";
+import axios from "axios";
 
 function Project() {
   const [activeTab, setActiveTab] = useState("Project");
   const [searchTerm, setSearchTerm] = useState("");
+  const [projects, setProjects] = useState([]); // Ensure this is an empty array
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const filteredProjects = projectData.filter((project) =>
-    project.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get(
+          "https://yoliday-backendd.onrender.com/api/projects"
+        );
+        console.log("Fetched projects:", response.data);
+        if (Array.isArray(response.data)) {
+          setProjects(response.data);
+        } else {
+          console.error("Expected an array, but got:", response.data);
+          setError("Unexpected data format");
+        }
+      } catch (err) {
+        console.error("Error fetching projects:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  const filteredProjects = Array.isArray(projects)
+    ? projects.filter((project) =>
+        project.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : [];
+
+  if (loading) return <p>Loading projects...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="p-4">
@@ -21,9 +53,13 @@ function Project() {
       </div>
 
       <div className="mt-4 space-y-4">
-        {filteredProjects.map((project, index) => (
-          <Card key={index} project={project} />
-        ))}
+        {filteredProjects.length > 0 ? (
+          filteredProjects.map((project) => (
+            <Card key={project.id} project={project} />
+          ))
+        ) : (
+          <p>No projects found.</p>
+        )}
       </div>
     </div>
   );
